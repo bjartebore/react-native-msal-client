@@ -1,0 +1,26 @@
+{
+  "name": "react-native-msal-client",
+  "version": "0.1.0",
+  "description": "React Native Bindings for the Microsoft MSAL library",
+  "main": "./index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native",
+    "Microsoft MSAL",
+    "MSAL",
+    "Authentication",
+    "ios"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjartebore/react-native-msal.git"
+  },
+  "author": "Bjarte Bore",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bjartebore/react-native-msal/issues"
+  },
+  "homepage": "https://github.com/bjartebore/react-native-msal#readme"
+}
