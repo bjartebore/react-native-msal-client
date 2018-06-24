@@ -24,13 +24,25 @@ export default class msalExample extends Component {
 
     this.state = {
       isLoggedin: false,
-      givenName: '',
+      name: '',
     }
   }
 
   _handleLoginPress = () => {
     this.authClient.acquireTokenAsync(clientId, scopes, redirectUri, '')
-      .then((data)=> {
+      .then(async (data)=> {
+
+        this.setState({
+          isLoggedin: true,
+          name: data.userInfo.name,
+        });
+        
+        const token = await this.authClient.acquireTokenSilentAsync(
+          clientId,
+          scopes,
+          data.userInfo.userIdentifier,
+        );
+
         console.log('success', data);
       }).catch((err) => {
         console.log('error', err);
@@ -46,7 +58,7 @@ export default class msalExample extends Component {
   renderLogout() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Hi {this.state.givenName}!</Text>
+        <Text style={styles.welcome}>Hi {this.state.name}!</Text>
         <Button title="logout" onPress={this._handleLogoutPress} />
       </View>
     );

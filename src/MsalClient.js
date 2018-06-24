@@ -10,8 +10,6 @@ export default class MsalClient {
   }
 
   acquireTokenAsync = (clientId, scopes, redirectUri, extraQueryParameters) => {
-    var a = RNMsalPlugin ;
-    debugger;
     return RNMsalPlugin.acquireTokenAsync(
       this._authority,
       clientId,
@@ -21,11 +19,12 @@ export default class MsalClient {
     );
   };
 
-  acquireTokenSilentAsync = (clientId, scopes) => {
-    return RNMsalPlugin.acquireTokenAsync(
+  acquireTokenSilentAsync = (clientId, scopes, userIdentitfier) => {
+    return RNMsalPlugin.acquireTokenSilentAsync(
       this._authority,
       clientId,
       scopes,
+      userIdentitfier,
     );
   };
 }
