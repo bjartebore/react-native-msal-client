@@ -25,28 +25,46 @@ export default class msalExample extends Component {
     this.state = {
       isLoggedin: false,
       name: '',
+      userIdentifier: null,
     }
   }
 
   _handleLoginPress = () => {
-    this.authClient.acquireTokenAsync(clientId, scopes, redirectUri, '')
-      .then(async (data)=> {
+    if (this.state.userIdentifier) {
+      this.authClient.acquireTokenSilentAsync(clientId, scopes, this.state.userIdentifier)
+        .then((result) => {
+          this.setState({
+            isLoggedin: true,
+            name: result.userInfo.name,
+            userIdentifier: result.userInfo.userIdentifier,
+          });
+        })
+        .catch((err) => {
+          console.log('error', err);
+        })
+    } else {
+      this.authClient.acquireTokenAsync(clientId, scopes, redirectUri, '')
+        .then((result)=> {
 
-        this.setState({
-          isLoggedin: true,
-          name: data.userInfo.name,
-        });
-        
-        const token = await this.authClient.acquireTokenSilentAsync(
-          clientId,
-          scopes,
-          data.userInfo.userIdentifier,
-        );
+          this.setState({
+            isLoggedin: true,
+            name: result.userInfo.name,
+            userIdentifier: result.userInfo.userIdentifier,
+          });
 
-        console.log('success', data);
-      }).catch((err) => {
-        console.log('error', err);
-      })
+          console.log('success', data);
+        }).catch((err) => {
+          console.log('error', err);
+        })
+      }
+
+  }
+
+  _handleLogoutPress = () => {
+    this.setState({
+      isLoggedin: false,
+      name: '',
+    });
   }
 
   renderLogin() {

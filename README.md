@@ -1,5 +1,7 @@
 # react-native-msal-client
 
+This is a simple wrapper around Microsofts [MSAL](https://github.com/samcolby/react-native-ms-adal/) library. it currently only supports iOS
+
 ## Requirements
 
 * [React Native](https://facebook.github.io/react-native/) (tested on 0.55)

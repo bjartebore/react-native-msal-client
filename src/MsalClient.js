@@ -4,6 +4,15 @@ import {
 
 const { RNMsalPlugin } = NativeModules;
 
+export const { MSALErrorCode } = RNMsalPlugin;
+
+const normalizeError = (err) => {
+  if (err.code) {
+    err.code = parseInt(err.code, 10);
+  }
+  throw err;
+}
+
 export default class MsalClient {
   constructor(authority) {
     this._authority = authority;
@@ -16,7 +25,7 @@ export default class MsalClient {
       scopes,
       redirectUri,
       extraQueryParameters,
-    );
+    ).catch(normalizeError);
   };
 
   acquireTokenSilentAsync = (clientId, scopes, userIdentitfier) => {
@@ -25,6 +34,6 @@ export default class MsalClient {
       clientId,
       scopes,
       userIdentitfier,
-    );
+    ).catch(normalizeError);
   };
 }

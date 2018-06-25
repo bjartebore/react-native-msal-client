@@ -15,12 +15,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bjartebore/react-native-msal.git"
+    "url": "git+https://github.com/bjartebore/react-native-msal-client.git"
   },
   "author": "Bjarte Bore",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bjartebore/react-native-msal/issues"
+    "url": "https://github.com/bjartebore/react-native-msal-client/issues"
   },
-  "homepage": "https://github.com/bjartebore/react-native-msal#readme"
+  "homepage": "https://github.com/bjartebore/react-native-msal-client#readme"
 }
