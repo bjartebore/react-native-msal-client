@@ -71,18 +71,7 @@ RCT_REMAP_METHOD(acquireTokenAsync,
              if(error) {
                  reject(error.domain, error.description, error);
              } else {
-                 resolve(@{
-                           @"accessToken": result.accessToken,
-                           @"idToken": result.idToken,
-                           @"userInfo": @{
-                                   @"userId": result.user.uid,
-                                   @"userName": result.user.displayableId,
-                                   @"userIdentifier": result.user.userIdentifier,
-                                   @"name": result.user.name,
-                                   @"identityProvider": result.user.identityProvider,
-                                   @"tenantId": result.tenantId
-                                   }
-                           });
+                 resolve([self MSALResultToDictionary:result]);
              }
 
          }];
@@ -125,18 +114,7 @@ RCT_REMAP_METHOD(acquireTokenSilentAsync,
                                  if(error) {
                                      reject([[NSString alloc] initWithFormat:@"%d", (int)error.code], error.description, error);
                                  } else {
-                                     resolve(@{
-                                               @"accessToken": result.accessToken,
-                                               @"idToken": result.idToken,
-                                               @"userInfo": @{
-                                                       @"userId": result.user.uid,
-                                                       @"userName": result.user.displayableId,
-                                                       @"userIdentifier": result.user.userIdentifier,
-                                                       @"name": result.user.name,
-                                                       @"identityProvider": result.user.identityProvider,
-                                                       @"tenantId": result.tenantId
-                                                       }
-                                               });
+                                     resolve([self MSALResultToDictionary:result]);
                                  }
                              }];
 
@@ -145,6 +123,37 @@ RCT_REMAP_METHOD(acquireTokenSilentAsync,
     {
         reject([[NSString alloc] initWithFormat:@"%d", (int)error.code], error.description, error);
     }
+}
+
+
+- (NSDictionary*)MSALResultToDictionary:(MSALResult*)result
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:1];
+    [dict setObject:(result.accessToken ?: [NSNull null]) forKey:@"accessToken"];
+    [dict setObject:(result.idToken ?: [NSNull null]) forKey:@"idToken"];
+
+    if (result.expiresOn)
+    {
+        [dict setObject:[NSNumber numberWithDouble:[result.expiresOn timeIntervalSince1970] * 1000] forKey:@"expiresOn"];
+    }
+
+    [dict setObject:[self MSALUserToDictionary:result.user forTenant:result.tenantId] forKey:@"userInfo"];
+    return [dict mutableCopy];
+}
+
+- (NSDictionary*)MSALUserToDictionary:(MSALUser*)user
+                            forTenant:(NSString*)tenantid
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:1];
+
+    [dict setObject:(user.uid ?: [NSNull null]) forKey:@"userID"];
+    [dict setObject:(user.displayableId ?: [NSNull null]) forKey:@"userName"];
+    [dict setObject:(user.userIdentifier ?: [NSNull null]) forKey:@"userIdentifier"];
+    [dict setObject:(user.name ?: [NSNull null]) forKey:@"name"];
+    [dict setObject:(user.identityProvider ?: [NSNull null]) forKey:@"identityProvider"];
+    [dict setObject:(tenantid ?: [NSNull null]) forKey:@"tenantId"];
+
+    return [dict mutableCopy];
 }
 
 + (MSALPublicClientApplication* )getOrCreateClientApplication:(NSString*)authority
