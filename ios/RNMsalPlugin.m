@@ -69,7 +69,7 @@ RCT_REMAP_METHOD(acquireTokenAsync,
                        completionBlock:^(MSALResult *result, NSError *error)
          {
              if(error) {
-                 reject(error.domain, error.description, error);
+                 reject([[NSString alloc] initWithFormat:@"%d", (int)error.code], error.description, error);
              } else {
                  resolve([self MSALResultToDictionary:result]);
              }
@@ -125,6 +125,44 @@ RCT_REMAP_METHOD(acquireTokenSilentAsync,
     }
 }
 
+RCT_REMAP_METHOD(tokenCacheDeleteItem,
+                 authority:(NSString *)authority
+                 clientId:(NSString *)clientId
+                 userIdentitfier:(NSString*)userIdentifier
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try
+    {
+        NSError* error = nil;
+        MSALPublicClientApplication* clientApplication = [RNMsalPlugin getOrCreateClientApplication:authority
+                                                                                       withClientId:clientId
+                                                                                              error:&error];
+
+        if (error) {
+            @throw error;
+        }
+
+        MSALUser* user = [clientApplication userForIdentifier:userIdentifier error:&error];
+
+        if (error) {
+            @throw error;
+        }
+
+        [clientApplication removeUser:user error:&error];
+
+        if (error) {
+            @throw error;
+        }
+
+        resolve([NSNull null]);
+
+    }
+    @catch(NSError* error)
+    {
+        reject([[NSString alloc] initWithFormat:@"%d", (int)error.code], error.description, error);
+    }
+}
 
 - (NSDictionary*)MSALResultToDictionary:(MSALResult*)result
 {

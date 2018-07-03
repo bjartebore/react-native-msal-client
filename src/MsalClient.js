@@ -18,6 +18,8 @@ export default class MsalClient {
     this._authority = authority;
   }
 
+  static ErrorCodes = MSALErrorCode;
+
   acquireTokenAsync = (clientId, scopes, redirectUri, extraQueryParameters) => {
     return RNMsalPlugin.acquireTokenAsync(
       this._authority,
@@ -36,4 +38,13 @@ export default class MsalClient {
       userIdentitfier,
     ).catch(normalizeError);
   };
+
+
+  tokenCacheDeleteItem = (clientId, userIdentitfier) => {
+    return RNMsalPlugin.tokenCacheDeleteItem(
+      this._authority,
+      clientId,
+      userIdentitfier,
+    ).catch(normalizeError);
+  }
 }
