@@ -43,18 +43,17 @@ export default class msalExample extends Component {
           console.log('error', err);
         })
     } else {
-      this.authClient.acquireTokenAsync(clientId, scopes, redirectUri, '')
+      this.authClient.acquireTokenAsync(clientId, scopes, redirectUri)
         .then((result)=> {
-
           this.setState({
             isLoggedin: true,
             name: result.userInfo.name,
             userIdentifier: result.userInfo.userIdentifier,
           });
 
-          console.log('success', data);
+          console.log('success', result);
         }).catch((err) => {
-          console.log('error', err);
+          console.error(err);
         })
       }
 

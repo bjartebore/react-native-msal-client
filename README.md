@@ -18,7 +18,7 @@ Install [MSAL](https://github.com/AzureAD/microsoft-authentication-library-for-o
 Add the following to the Podfile and run ```pod install``
 
 ```ruby
-pod 'MSAL', :git => 'https://github.com/AzureAD/microsoft-authentication-library-for-objc.git', :tag => '0.1.3'
+pod 'MSAL', '0.2.3'
 ```
 
 
