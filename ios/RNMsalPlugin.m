@@ -169,6 +169,7 @@ RCT_REMAP_METHOD(tokenCacheDeleteItem,
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:1];
     [dict setObject:(result.accessToken ?: [NSNull null]) forKey:@"accessToken"];
     [dict setObject:(result.idToken ?: [NSNull null]) forKey:@"idToken"];
+    [dict setObject:(result.uniqueId) ?: [NSNull null] forKey:@"uniqueId"];
 
     if (result.expiresOn)
     {
