@@ -1,6 +1,6 @@
 {
   "name": "react-native-msal-client",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "React Native Bindings for the Microsoft MSAL library",
   "main": "./index.js",
   "scripts": {
