@@ -46,7 +46,6 @@ RCT_REMAP_METHOD(acquireTokenAsync,
                  authority:(NSString *)authority
                  clientId:(NSString *)clientId
                  scopes:(NSArray<NSString*>*)scopes
-                 redirectUri:(NSString *)redirectUri
                  extraQueryParms:(NSString*)extraQueryParms
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject )

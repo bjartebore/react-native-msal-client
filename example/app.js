@@ -5,6 +5,8 @@ import {
   Text,
   View,
   Button,
+  ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 
 import MsalClient from 'react-native-msal-client';
@@ -23,61 +25,103 @@ export default class msalExample extends Component {
     this.authClient = new MsalClient(authority);
 
     this.state = {
+      isLoggingIn:false,
       isLoggedin: false,
       name: '',
       userIdentifier: null,
+      expiresOn:'',
+      isRefreshingToken:false
     }
+  }
+  
+  _isLoggingIn = (value) =>{
+    this.setState({
+      isLoggingIn: value
+    });
+  }
+
+  _refreshingToken = (value) => {
+    this.setState({
+      isRefreshingToken:value
+    });
+  }
+
+  _handleTokenRefresh = async () => {
+
+    this._refreshingToken(true);
+
+      try {
+        let result = await this.authClient.acquireTokenSilentAsync(clientId, scopes, this.state.userIdentifier);
+
+        this.setState({
+          isRefreshingToken:false,
+          isLoggedin: true,
+          expiresOn:result.expiresOn,
+          name: result.userInfo.name,
+          userIdentifier: result.userInfo.userIdentifier,
+        });
+
+      } catch (error) {
+        this._refreshingToken(false);
+        console.log(error);
+      }
   }
 
   _handleLoginPress = () => {
-    if (this.state.userIdentifier) {
-      this.authClient.acquireTokenSilentAsync(clientId, scopes, this.state.userIdentifier)
-        .then((result) => {
-          this.setState({
-            isLoggedin: true,
-            name: result.userInfo.name,
-            userIdentifier: result.userInfo.userIdentifier,
-          });
-        })
-        .catch((err) => {
-          console.log('error', err);
-        })
-    } else {
-      this.authClient.acquireTokenAsync(clientId, scopes, redirectUri, '')
+       this._isLoggingIn(true);
+
+      this.authClient.acquireTokenAsync(clientId, scopes)
         .then((result)=> {
 
           this.setState({
+            isLoggingIn:false,
             isLoggedin: true,
+            expiresOn:result.expiresOn,
             name: result.userInfo.name,
             userIdentifier: result.userInfo.userIdentifier,
           });
 
-          console.log('success', data);
+          console.log('success', result);
         }).catch((err) => {
+          this._isLoggingIn(true);
           console.log('error', err);
-        })
-      }
-
+        });
   }
 
   _handleLogoutPress = () => {
     this.setState({
       isLoggedin: false,
       name: '',
+      userIdentifier: null,
+      expiresOn:''
     });
   }
 
   renderLogin() {
     return (
-      <Button title="login" onPress={this._handleLoginPress} />
+      <TouchableOpacity onPress={this._handleLoginPress}>
+        <Text style={styles.button}>Login</Text>
+      </TouchableOpacity>
     );
+  }
+
+  renderRefreshToken(){
+      return  this.state.isRefreshingToken ? 
+                (<ActivityIndicator></ActivityIndicator>)  : 
+                (<TouchableOpacity style={{margin:10}} onPress={this._handleTokenRefresh}>
+                    <Text style={styles.button}>Refresh Token</Text>
+                </TouchableOpacity>) 
   }
 
   renderLogout() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Hi {this.state.name}!</Text>
-        <Button title="logout" onPress={this._handleLogoutPress} />
+        <Text style={styles.expiresOn}>Token Expires On {this.state.expiresOn}</Text>
+        {this.renderRefreshToken()}
+        <TouchableOpacity onPress={this._handleLogoutPress}>
+          <Text style={styles.button}>Logout</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -85,11 +129,15 @@ export default class msalExample extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {
-          this.state.isLoggedin
-            ? this.renderLogout()
-            : this.renderLogin()
-        }
+       {
+         this.state.isLoggingIn && (<ActivityIndicator></ActivityIndicator>)
+       }
+       {
+         this.state.isLoggedin && !this.state.isLoggingIn && this.renderLogout()
+       }
+       {
+         !this.state.isLoggedin && !this.state.isLoggingIn && this.renderLogin()
+       }
       </View>
     );
   }
@@ -112,4 +160,13 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  expiresOn:{
+    fontSize: 15,
+    textAlign: 'center'
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10
+  }
 });

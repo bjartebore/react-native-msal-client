@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/bjartebore/react-native-msal-client/issues"
   },
-  "homepage": "https://github.com/bjartebore/react-native-msal-client#readme"
+  "homepage": "https://github.com/bjartebore/react-native-msal-client#readme",
+  "dependencies": {
+    "react-native": "^0.55.4"
+  }
 }
