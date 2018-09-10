@@ -1,10 +1,11 @@
 import {
-  NativeModules
+  NativeModules,
+  Platform
 } from 'react-native';
 
 const { RNMsalPlugin } = NativeModules;
 
-export const { MSALErrorCode } = RNMsalPlugin;
+export const { MSALErrorCode } = Platform.OS == "ios" ? RNMsalPlugin : {};
 
 const normalizeError = (err) => {
   if (err.code) {
@@ -20,21 +21,20 @@ export default class MsalClient {
 
   static ErrorCodes = MSALErrorCode;
 
-  acquireTokenAsync = (clientId, scopes, redirectUri, extraQueryParameters) => {
-    return RNMsalPlugin.acquireTokenAsync(
-      this._authority,
-      clientId,
-      scopes,
-      redirectUri,
-      extraQueryParameters,
-    ).catch(normalizeError);
+  acquireTokenAsync = (clientId, scopes, extraQueryParameters) => {
+      return RNMsalPlugin.acquireTokenAsync(
+        this._authority,
+        clientId,
+        Platform.OS == "ios" ? scopes : scopes.join(","),
+        extraQueryParameters,
+      ).catch(normalizeError);
   };
 
   acquireTokenSilentAsync = (clientId, scopes, userIdentitfier) => {
     return RNMsalPlugin.acquireTokenSilentAsync(
       this._authority,
       clientId,
-      scopes,
+      Platform.OS == "ios" ? scopes : scopes.join(","),
       userIdentitfier,
     ).catch(normalizeError);
   };

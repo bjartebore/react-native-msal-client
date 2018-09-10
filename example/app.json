@@ -1,4 +1,10 @@
 {
   "name": "msalExample",
-  "displayName": "msalExample"
+  "displayName": "msalExample",
+  "expo": {
+    "slug": "msalExample",
+    "name": "msalExample",
+    "sdkVersion": "29.0.0",
+    "entryPoint": "c:\\GitPlayground\\react-native-msal-client\\react-native-msal-client\\example\\.vscode\\exponentIndex.js"
+  }
 }
