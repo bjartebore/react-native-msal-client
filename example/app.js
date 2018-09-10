@@ -83,7 +83,7 @@ export default class msalExample extends Component {
 
           console.log('success', result);
         }).catch((err) => {
-          this._isLoggingIn(true);
+          this._isLoggingIn(false);
           console.log('error', err);
         });
   }
