@@ -1,13 +1,7 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+/** @format */
 
-import {
-  AppRegistry,
-} from 'react-native';
+import {AppRegistry} from 'react-native';
+import App from './App';
+import {name as appName} from './app.json';
 
-import msalExample from './app';
-
-AppRegistry.registerComponent('msalExample', () => msalExample);
+AppRegistry.registerComponent(appName, () => App);

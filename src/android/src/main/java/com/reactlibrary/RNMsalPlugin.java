@@ -113,12 +113,7 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule implements Activity
     }
 
     @Override
-    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         _publicClientApplication.handleInteractiveRequestRedirect(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-
     }
 }

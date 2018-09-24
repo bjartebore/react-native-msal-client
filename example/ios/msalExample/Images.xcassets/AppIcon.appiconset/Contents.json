@@ -40,11 +40,11 @@
       "size" : "60x60",
       "scale" : "3x"
     },
-  {
-    "idiom" : "ios-marketing",
-    "size" : "1024x1024",
-    "scale" : "1x"
-  }
+    {
+      "idiom" : "ios-marketing",
+      "size" : "1024x1024",
+      "scale" : "1x"
+    }
   ],
   "info" : {
     "version" : 1,

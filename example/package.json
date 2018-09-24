@@ -1,22 +1,23 @@
 {
-	"name": "msalExample",
-	"version": "0.0.1",
-	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"test": "jest"
-	},
-	"dependencies": {
-		"react": "16.3.1",
-		"react-native": "0.55.4",
-		"react-native-msal-client": "file:../src/react-native-msal-client-0.2.0.tgz"
-	},
-	"devDependencies": {
-		"babel-jest": "23.0.1",
-		"babel-preset-react-native": "4.0.0",
-		"jest": "23.0.1",
-		"react-test-renderer": "16.3.1"
-	},
-	"jest": {
-		"preset": "react-native"
-	}
+  "name": "msalExample",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "16.5.0",
+    "react-native": "0.57.1",
+    "react-native-msal-client": "../src/react-native-msal-client-0.2.0.tgz"
+  },
+  "devDependencies": {
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.45.6",
+    "react-test-renderer": "16.5.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
 }

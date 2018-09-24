@@ -62,7 +62,7 @@ RCT_REMAP_METHOD(acquireTokenAsync,
                   extraScopesToConsent:nil
                                   user:nil
                             uiBehavior:MSALUIBehaviorDefault
-                  extraQueryParameters:nil
+                  extraQueryParameters:extraQueryParms
                              authority:authority
                          correlationId:nil
                        completionBlock:^(MSALResult *result, NSError *error)
