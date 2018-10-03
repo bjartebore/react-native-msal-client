@@ -18,8 +18,16 @@ import com.microsoft.identity.client.MsalException;
 import com.microsoft.identity.client.PublicClientApplication;
 import com.microsoft.identity.client.User;
 
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class RNMsalPlugin extends ReactContextBaseJavaModule implements ActivityEventListener {
     private static PublicClientApplication _publicClientApplication;
+
+    private static Map<String,PublicClientApplication> _publicClientApplications = new HashMap<>();
 
     public RNMsalPlugin(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -31,11 +39,21 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule implements Activity
         return "RNMsalPlugin";
     }
 
+    @Override
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        _publicClientApplication.handleInteractiveRequestRedirect(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+
+    }
+
     @ReactMethod
     public void acquireTokenAsync(String authority, String clientId, String scopes, String extraParameters, final Promise promise) {
         try {
 
-            getOrCreatePublicationClient(clientId, authority).acquireToken(this.getCurrentActivity(), scopes.split(","), "", null, extraParameters, handleResult(promise));
+            getOrCreatePublicationClient(clientId, authority).acquireToken(this.getCurrentActivity(), scopes.split(","), "", null, extraParameters, handleResult(promise, authority));
 
         } catch (Exception ex) {
             promise.reject(ex);
@@ -43,25 +61,41 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule implements Activity
     }
 
     @ReactMethod
-    public void acquireTokenSilentAsync(String authority, String clientId, String scopes, String userIdentitfier, final Promise promise){
+    public void acquireTokenSilentAsync(String authority, String clientId, String scopes, String userIdentifier, final Promise promise){
 
         try {
             PublicClientApplication publicClientApplication = getOrCreatePublicationClient(clientId, authority);
             
-            User user = publicClientApplication.getUser(userIdentitfier);
+            User user = publicClientApplication.getUser(userIdentifier);
 
-            publicClientApplication.acquireTokenSilentAsync(scopes.split(","), user, handleResult(promise));
+            publicClientApplication.acquireTokenSilentAsync(scopes.split(","), user, handleResult(promise, authority));
 
         } catch (Exception ex) {
             promise.reject(ex);
         }
     }
 
-    private AuthenticationCallback handleResult(final Promise promise){
+    @ReactMethod
+    public void tokenCacheDeleteItem(String authority, String clientId, String userIdentifier, final Promise promise){
+        try {
+            PublicClientApplication publicClientApplication = getOrCreatePublicationClient(clientId, authority);
+
+            User user = publicClientApplication.getUser(userIdentifier);
+
+            publicClientApplication.remove(user);
+
+            promise.resolve(null);
+
+        } catch (Exception ex) {
+            promise.reject(ex);
+        }
+    }
+
+    private AuthenticationCallback handleResult(final Promise promise, final String authority){
        return new AuthenticationCallback() {
             @Override
             public void onSuccess(AuthenticationResult authenticationResult) {
-                promise.resolve(msalResultToDictionary(authenticationResult));
+                promise.resolve(msalResultToDictionary(authenticationResult, authority));
             }
 
             @Override
@@ -77,18 +111,25 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule implements Activity
     }
 
     private PublicClientApplication getOrCreatePublicationClient(String clientId, String authority) {
-        if (_publicClientApplication == null) {
+
+        _publicClientApplication = _publicClientApplications.get(authority);
+
+        if(_publicClientApplication == null){
             _publicClientApplication = new PublicClientApplication(this.getReactApplicationContext(), clientId, authority);
+            _publicClientApplication.setValidateAuthority(false);
+            _publicClientApplications.put(authority,_publicClientApplication);
         }
+
         return _publicClientApplication;
     }
 
-    private WritableMap msalResultToDictionary(AuthenticationResult result) {
+    private WritableMap msalResultToDictionary(AuthenticationResult result, String authority) {
 
         WritableMap resultData = new WritableNativeMap();
         resultData.putString("accessToken", result.getAccessToken());
         resultData.putString("idToken", result.getIdToken());
         resultData.putString("uniqueId", result.getUniqueId());
+        resultData.putString("authority", authority);
 
         if (result.getExpiresOn() != null) {
             resultData.putString("expiresOn", String.format("%s", result.getExpiresOn().getTime()));
@@ -112,8 +153,5 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule implements Activity
         return resultData;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        _publicClientApplication.handleInteractiveRequestRedirect(requestCode, resultCode, data);
-    }
+
 }
