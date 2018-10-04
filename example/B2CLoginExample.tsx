@@ -1,36 +1,39 @@
 import React from "react";
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
-  ActivityIndicator,
-  TouchableOpacity
 } from "react-native";
 
 import MsalClient from "react-native-msal-client";
-import { IPolicies, IAuthenticationResult, IError } from "react-native-msal-client";
+import {
+  IAuthenticationResult,
+  IError,
+  IPolicies,
+ } from "react-native-msal-client";
 
 const authority = "https://{domain}.b2clogin.com/tfp/{domain}.onmicrosoft.com";
 const applicationId = "{applicationId}";
 const policies = {
   signUpSignInPolicy: "B2C_1_signup-signin-policy",
-  passwordResetPolicy: "B2C_1_Password-reset-policy"
+  passwordResetPolicy: "B2C_1_Password-reset-policy",
 } as IPolicies;
 
 const scopes = [
-  "https://{domain}.onmicrosoft.com/{app id}/user_impersonation"
-] as Array<string>;
-
+  "https://{domain}.onmicrosoft.com/{app id}/user_impersonation",
+] as string[];
 
 interface IState {
-  isLoggingIn: Boolean;
-  isLoggedin: Boolean;
+  isLoggingIn: boolean;
+  isLoggedin: boolean;
   authenticationResult: IAuthenticationResult;
-  isRefreshingToken: Boolean;
+  isRefreshingToken: boolean;
 }
 
 export default class B2CLoginExample extends React.Component<any, IState> {
-  authClient: MsalClient;
+  private authClient: MsalClient;
 
   constructor(props: any) {
     super(props);
@@ -41,95 +44,32 @@ export default class B2CLoginExample extends React.Component<any, IState> {
       isLoggingIn: false,
       isLoggedin: false,
       isRefreshingToken: false,
-      authenticationResult: {} as IAuthenticationResult
+      authenticationResult: {} as IAuthenticationResult,
     };
   }
 
-  _isLoggingIn = (value: Boolean): void => {
-    this.setState({
-      isLoggingIn: value
-    });
-  };
-
-  _refreshingToken = (value: Boolean): void => {
-    this.setState({
-      isRefreshingToken: value
-    });
-  };
-
-  _handleTokenRefresh = async (): Promise<void> => {
-    this._refreshingToken(true);
-
-    try {
-      let result = await this.authClient.acquireTokenSilentAsync(
-        scopes,
-        this.state.authenticationResult.userInfo.userIdentifier,
-        this.state.authenticationResult.authority
-      );
-
-      this.setState({
-        isRefreshingToken: false,
-        isLoggedin: true,
-        authenticationResult: result
-      });
-    } catch (error) {
-      this._refreshingToken(false);
-      console.log(error);
-    }
-  };
-
-  _handleLoginPress = async (): Promise<void> => {
-    this._isLoggingIn(true);
-
-    try {
-      let result = await this.authClient.aquireTokenB2CAsync(scopes, policies);
-      this.setState({
-        isLoggingIn: false,
-        isLoggedin: true,
-        authenticationResult: result
-      });
-    } catch (error) {
-      this._isLoggingIn(false);
-      console.log(error);
-    }
-  };
-
-  _handleLogoutPress = () => {
-    this.authClient.tokenCacheB2CDeleteItem(
-      this.state.authenticationResult.authority,
-      this.state.authenticationResult.userInfo.userIdentifier
-    ).then(()=>{
-        this.setState({
-        isLoggedin: false,
-        authenticationResult: {} as IAuthenticationResult
-      });
-    }).catch((error:IError)=>{
-      console.log(error.message);
-    });
-  };
-
-  renderLogin() {
+  public renderLogin() {
     return (
-      <TouchableOpacity onPress={this._handleLoginPress}>
+      <TouchableOpacity onPress={this.handleLoginPress}>
         <Text style={styles.button}>Login with b2c</Text>
       </TouchableOpacity>
     );
   }
 
-  renderRefreshToken() {
+  public renderRefreshToken() {
     return this.state.isRefreshingToken ? (
       <ActivityIndicator />
     ) : (
       <TouchableOpacity
         style={{ margin: 10 }}
-        onPress={this._handleTokenRefresh}
+        onPress={this.handleTokenRefresh}
       >
         <Text style={styles.button}>Refresh Token</Text>
       </TouchableOpacity>
     );
   }
 
-  renderLogout() {
+  public renderLogout() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -139,14 +79,14 @@ export default class B2CLoginExample extends React.Component<any, IState> {
           Token Expires On {this.state.authenticationResult.expiresOn}
         </Text>
         {this.renderRefreshToken()}
-        <TouchableOpacity onPress={this._handleLogoutPress}>
+        <TouchableOpacity onPress={this.handleLogoutPress}>
           <Text style={styles.button}>Logout</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
-  render() {
+  public render() {
     return (
       <View style={styles.container}>
         {this.state.isLoggingIn && <ActivityIndicator />}
@@ -159,6 +99,68 @@ export default class B2CLoginExample extends React.Component<any, IState> {
       </View>
     );
   }
+
+  private isLoggingIn = (value: boolean): void => {
+    this.setState({
+      isLoggingIn: value,
+    });
+  }
+
+  private refreshingToken = (value: boolean): void => {
+    this.setState({
+      isRefreshingToken: value,
+    });
+  }
+
+  private handleTokenRefresh = async (): Promise<void> => {
+    this.refreshingToken(true);
+
+    try {
+      const result = await this.authClient.acquireTokenSilentAsync(
+        scopes,
+        this.state.authenticationResult.userInfo.userIdentifier,
+        this.state.authenticationResult.authority,
+      );
+
+      this.setState({
+        isRefreshingToken: false,
+        isLoggedin: true,
+        authenticationResult: result,
+      });
+    } catch (error) {
+      this.refreshingToken(false);
+    }
+  }
+
+  private handleLoginPress = async (): Promise<void> => {
+    this.isLoggingIn(true);
+
+    try {
+      const result = await this.authClient.aquireTokenB2CAsync(scopes, policies);
+      this.setState({
+        isLoggingIn: false,
+        isLoggedin: true,
+        authenticationResult: result,
+      });
+    } catch (error) {
+      this.isLoggingIn(false);
+    }
+  }
+
+  private handleLogoutPress = () => {
+    this.authClient.tokenCacheB2CDeleteItem(
+      this.state.authenticationResult.authority,
+      this.state.authenticationResult.userInfo.userIdentifier,
+    ).then(() => {
+        this.setState({
+        isLoggedin: false,
+        authenticationResult: {} as IAuthenticationResult,
+      });
+    }).catch((error: IError) => {
+      // tslint:disable-next-line:no-console
+      console.log(error.message);
+    });
+  }
 }
 
 const styles = StyleSheet.create({
@@ -166,25 +168,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCFF"
+    backgroundColor: "#F5FCFF",
   },
   welcome: {
     fontSize: 20,
     textAlign: "center",
-    margin: 20
+    margin: 20,
   },
   instructions: {
     textAlign: "center",
     color: "#333333",
-    marginBottom: 5
+    marginBottom: 5,
   },
   expiresOn: {
     fontSize: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   button: {
     alignItems: "center",
     backgroundColor: "#DDDDDD",
-    padding: 10
-  }
+    padding: 10,
+  },
 });

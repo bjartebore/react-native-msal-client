@@ -1,50 +1,51 @@
+// @ts-ignore
 import { NativeModules, Platform } from "react-native";
 import {
-  IPolicies,
   IAuthenticationResult,
-  IError
+  IError,
+  IPolicies,
 } from "./MsalClientInterfaces";
 
 const { RNMsalPlugin } = NativeModules;
 const RESET_PASSWORD_CODE = "AADB2C90118";
-const delay = (t: any) => new Promise(resolve => setTimeout(resolve, t));
+const delay = (t: any) => new Promise((resolve) => setTimeout(resolve, t));
 
 export default class MsalClient {
-  _authority: string;
-  _clientId: string;
-  _b2cAuthority: string;
+  private authority: string;
+  private clientId: string;
+  private b2cAuthority: string;
 
   constructor(authority: string, clientId: string) {
-    this._authority = authority;
-    this._clientId = clientId;
-    this._b2cAuthority = authority;
+    this.authority = authority;
+    this.clientId = clientId;
+    this.b2cAuthority = authority;
   }
 
-  acquireTokenAsync = (
-    scopes: Array<string>,
-    extraQueryParameters?: Record<string, string>
+  public acquireTokenAsync = (
+    scopes: string[],
+    extraQueryParameters?: Record<string, string>,
   ): Promise<IAuthenticationResult> => {
     return RNMsalPlugin.acquireTokenAsync(
-      this._b2cAuthority,
-      this._clientId,
-      Platform.OS == "ios" ? scopes : scopes.join(","),
-      JSON.stringify(extraQueryParameters)
+      this.b2cAuthority,
+      this.clientId,
+      Platform.OS === "ios" ? scopes : scopes.join(","),
+      JSON.stringify(extraQueryParameters),
     );
-  };
+  }
 
-  aquireTokenB2CAsync = (
-    scopes: Array<string>,
+  public aquireTokenB2CAsync = (
+    scopes: string[],
     policies: IPolicies,
     extraQueryParameters?: Record<string, string>,
-    beforePasswordReset?: () => {}
+    beforePasswordReset?: () => {},
   ): IAuthenticationResult => {
     this._addPolicyToAuthority(policies.signUpSignInPolicy);
 
     return RNMsalPlugin.acquireTokenAsync(
-      this._b2cAuthority,
-      this._clientId,
-      Platform.OS == "ios" ? scopes : scopes.join(","),
-      JSON.stringify(extraQueryParameters)
+      this.b2cAuthority,
+      this.clientId,
+      Platform.OS === "ios" ? scopes : scopes.join(","),
+      JSON.stringify(extraQueryParameters),
     ).catch((error: IError) => {
       if (
         error.message.includes(RESET_PASSWORD_CODE) &&
@@ -53,71 +54,71 @@ export default class MsalClient {
         if (beforePasswordReset) {
           beforePasswordReset();
         }
-        return this._resetPasswordAsync(
+        return this.resetPasswordAsync(
           scopes,
           policies.passwordResetPolicy,
-          extraQueryParameters
+          extraQueryParameters,
         );
       } else {
         throw error;
       }
     });
-  };
+  }
 
-  acquireTokenSilentAsync = (
-    scopes: Array<string>,
+  public acquireTokenSilentAsync = (
+    scopes: string[],
     userIdentitfier: string,
-    authority: string
+    authority: string,
   ): Promise<IAuthenticationResult> => {
     return RNMsalPlugin.acquireTokenSilentAsync(
       authority,
-      this._clientId,
-      Platform.OS == "ios" ? scopes : scopes.join(","),
-      userIdentitfier
+      this.clientId,
+      Platform.OS === "ios" ? scopes : scopes.join(","),
+      userIdentitfier,
     );
-  };
+  }
 
-  private _resetPasswordAsync = (
-    scopes: Array<string>,
-    passwordResetPolicy: string,
-    extraQueryParameters?: Record<string, string>
-  ): Promise<IAuthenticationResult> => {
-    let self = this;
-
-    this._addPolicyToAuthority(passwordResetPolicy);
-
-    //had to use a delay otherwise exception is thrown, only one interactive session allowed
-    //if anyone knows a better way feel free to fix
-    return delay(1000).then(() => {
-      return RNMsalPlugin.acquireTokenAsync(
-        self._b2cAuthority,
-        self._clientId,
-        Platform.OS == "ios" ? scopes : scopes.join(","),
-        JSON.stringify(extraQueryParameters)
-      );
-    });
-  };
-
-  tokenCacheDeleteItem = (userIdentitfier: string): Promise<void> => {
+  public tokenCacheDeleteItem = (userIdentitfier: string): Promise<void> => {
     return RNMsalPlugin.tokenCacheDeleteItem(
-      this._authority,
-      this._clientId,
-      userIdentitfier
+      this.authority,
+      this.clientId,
+      userIdentitfier,
     );
-  };
+  }
 
-  tokenCacheB2CDeleteItem = (
+  public tokenCacheB2CDeleteItem = (
     authority: string,
-    userIdentitfier: string
+    userIdentitfier: string,
   ): Promise<void> => {
     return RNMsalPlugin.tokenCacheDeleteItem(
       authority,
-      this._clientId,
-      userIdentitfier
+      this.clientId,
+      userIdentitfier,
     );
-  };
+  }
+
+  private resetPasswordAsync = (
+    scopes: string[],
+    passwordResetPolicy: string,
+    extraQueryParameters?: Record<string, string>,
+  ): Promise<IAuthenticationResult> => {
+    const self = this;
+
+    this._addPolicyToAuthority(passwordResetPolicy);
+
+    // had to use a delay otherwise exception is thrown, only one interactive session allowed
+    // if anyone knows a better way feel free to fix
+    return delay(1000).then(() => {
+      return RNMsalPlugin.acquireTokenAsync(
+        self.b2cAuthority,
+        self.clientId,
+        Platform.OS === "ios" ? scopes : scopes.join(","),
+        JSON.stringify(extraQueryParameters),
+      );
+    });
+  }
 
   private _addPolicyToAuthority(policy: string): void {
-    this._b2cAuthority = this._authority + "/" + policy;
+    this.b2cAuthority = this.authority + "/" + policy;
   }
 }

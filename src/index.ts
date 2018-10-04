@@ -1,2 +1,2 @@
-export { default } from './MsalClient';
-export { IAuthenticationResult, IError, IPolicies, IUserInfo} from './MsalClientInterfaces';
+export { default } from "./MsalClient";
+export { IAuthenticationResult, IError, IPolicies, IUserInfo} from "./MsalClientInterfaces";
