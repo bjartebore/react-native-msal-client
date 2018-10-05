@@ -5,33 +5,8 @@ This is a simple wrapper around Microsofts [MSAL](https://github.com/samcolby/re
 
 Tested  on [React Native](https://facebook.github.io/react-native/) 0.57.1
 
-## IOS Setup
-### Requirements
 
-  * [Cocoapods](https://cocoapods.org/)
-
-### Installation
-
-``` sh
-yarn add react-native-msal-client
-```
-
-Link the library
-``` sh
-react-native link react-native-msal-client
-```
-
-Install [MSAL](https://github.com/AzureAD/microsoft-authentication-library-for-objc) with cocoapods
-
-Add the following to the Podfile and run ```pod install```
-
-``` ruby
-pod 'MSAL', :git => 'https://github.com/AzureAD/microsoft-authentication-library-for-objc.git', :tag => '0.1.3'
-```
-
-## Android Setup
-
-### Installation
+## Installation
 
 ``` sh
 npm install react-native-msal-client
@@ -45,6 +20,21 @@ Link the library
 ``` sh
 react-native link react-native-msal-client
 ```
+
+## IOS Setup
+### Requirements
+
+  * [Cocoapods](https://cocoapods.org/)
+
+Install [MSAL](https://github.com/AzureAD/microsoft-authentication-library-for-objc) with cocoapods
+
+Add the following to the Podfile and run ```pod install```
+
+``` ruby
+pod 'MSAL', :git => 'https://github.com/AzureAD/microsoft-authentication-library-for-objc.git', :tag => '0.1.3'
+```
+
+## Android Setup
 
 Add Browser tab activity to your AndroidManifest.xml make sure to replace [REPLACE_WITH_YOUR_APPLICATION_ID] with your own application id
 
