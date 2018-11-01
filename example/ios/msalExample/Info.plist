@@ -41,18 +41,18 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLName</key>
-            <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>msalb0024ae1-263c-406a-8bc6-34aecf73a907</string>
-            </array>
-        </dict>
-    </array>
+  <array>
+      <dict>
+          <key>CFBundleTypeRole</key>
+          <string>Editor</string>
+          <key>CFBundleURLName</key>
+          <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+          <key>CFBundleURLSchemes</key>
+          <array>
+              <string>msalf9a4a5a2-7866-4317-ab87-19b3acf350e2</string>
+          </array>
+      </dict>
+  </array>
 	<key>NSAppTransportSecurity</key>
 	<!--See http://ste.vn/2015/06/10/configuring-app-transport-security-ios-9-osx-10-11/ -->
 	<dict>

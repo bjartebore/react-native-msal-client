@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 
 import MsalClient from 'react-native-msal-client';
-const authority = 'https://login.microsoftonline.com/common';
-const clientId = 'b0024ae1-263c-406a-8bc6-34aecf73a907';
-const redirectUri =  `msal${clientId}://auth`;
+const authority = 'https://login.microsoftonline.com/tfp/esmartdroneb2c.onmicrosoft.com/B2C_1_SI';
+const clientId = 'f9a4a5a2-7866-4317-ab87-19b3acf350e2';
+const redirectUri = `msal${clientId}://auth`;
 const scopes = [
-  'User.Read'
+  'https://esmartdroneb2c.onmicrosoft.com/esmartFacadeAPI/write',
 ];
 
 export default class msalExample extends Component {
@@ -52,8 +52,9 @@ export default class msalExample extends Component {
             userIdentifier: result.userInfo.userIdentifier,
           });
 
-          console.log('success', data);
+          console.log('success', result);
         }).catch((err) => {
+          debugger;
           console.log('error', err);
         })
       }
@@ -64,6 +65,7 @@ export default class msalExample extends Component {
     this.setState({
       isLoggedin: false,
       name: '',
+      userIdentifier: null,
     });
   }
 
