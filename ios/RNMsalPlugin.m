@@ -176,18 +176,19 @@ RCT_REMAP_METHOD(tokenCacheDeleteItem,
         [dict setObject:[NSNumber numberWithDouble:[result.expiresOn timeIntervalSince1970] * 1000] forKey:@"expiresOn"];
     }
 
-    [dict setObject:[self MSALUserToDictionary:result.user forTenant:result.tenantId] forKey:@"userInfo"];
+    [dict setObject:[self MSALUserToDictionary:result.user forTenant:result.tenantId withUserId:result.uniqueId] forKey:@"userInfo"];
     return [dict mutableCopy];
 }
 
 - (NSDictionary*)MSALUserToDictionary:(MSALUser*)user
                             forTenant:(NSString*)tenantid
+                           withUserId:(NSString*)userId
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:1];
 
-    [dict setObject:(user.uid ?: [NSNull null]) forKey:@"userID"];
+    [dict setObject:(userId ?: [NSNull null]) forKey:@"userId"];
     [dict setObject:(user.displayableId ?: [NSNull null]) forKey:@"userName"];
-    [dict setObject:(user.userIdentifier ?: [NSNull null]) forKey:@"userIdentifier"];
+    [dict setObject:(user.userIdentifier ?: [NSNull null]) forKey:@"userUniqueId"];
     [dict setObject:(user.name ?: [NSNull null]) forKey:@"name"];
     [dict setObject:(user.identityProvider ?: [NSNull null]) forKey:@"identityProvider"];
     [dict setObject:(tenantid ?: [NSNull null]) forKey:@"tenantId"];

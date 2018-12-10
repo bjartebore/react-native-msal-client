@@ -34,7 +34,6 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule {
   public RNMsalPlugin(ReactApplicationContext reactContext) {
     super(reactContext);
 
-    reactContext.addActivityEventListener(mActivityEventListener);
   }
 
   private PublicClientApplication client;
@@ -82,7 +81,7 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule {
       return;
     }
     Activity activity = getCurrentActivity();
-
+    this.getReactApplicationContext().addActivityEventListener(mActivityEventListener);
     client.acquireToken(
             activity,
             scopes.toArrayList().toArray(new String[scopes.size()]),
@@ -137,6 +136,10 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule {
       }
   }
 
+  private void cleanupEventHandler() {
+      this.getReactApplicationContext().removeActivityEventListener(mActivityEventListener);
+  }
+
   private AuthenticationCallback getAuthInteractiveCallback(final Promise callbackPromise) {
     return new AuthenticationCallback() {
       @Override
@@ -149,7 +152,8 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule {
         result.putDouble("expiresOn", authenticationResult.getExpiresOn().getTime());
         result.putMap("userInfo", Arguments.createMap());
         final WritableMap userInfo =  Arguments.createMap();
-        userInfo.putString("userIdentifier", authenticationResult.getAccount().getAccountIdentifier().getIdentifier());
+        userInfo.putString("userUniqueId", authenticationResult.getAccount().getHomeAccountIdentifier().getIdentifier());
+        userInfo.putString("userId", authenticationResult.getAccount().getAccountIdentifier().getIdentifier());
         /*
         userInfo.put("userID", authenticationResult.getUniqueId());
         userInfo.put("userName",authenticationResult.getAccount().getUsername());
@@ -160,17 +164,21 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule {
         result.putMap("userInfo", userInfo);
 
         callbackPromise.resolve(result);
+
+        cleanupEventHandler();
       }
 
       @Override
       public void onError(MsalException exception)
       {
-        callbackPromise.reject(exception);
+          callbackPromise.reject(exception);
+          cleanupEventHandler();
       }
 
       @Override
       public void onCancel() {
         callbackPromise.reject(new Exception());
+        cleanupEventHandler();
       }
     };
   }

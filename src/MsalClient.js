@@ -4,8 +4,7 @@ import {
 
 const { RNMsalPlugin } = NativeModules;
 
-// debugger;
-//export const { MSALErrorCode } = RNMsalPlugin;
+export const { MSALErrorCode } = RNMsalPlugin;
 
 const normalizeError = (err) => {
   if (err.code) {
