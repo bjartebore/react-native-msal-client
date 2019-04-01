@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
@@ -8,91 +7,74 @@ import {
 } from 'react-native';
 
 import MsalClient from 'react-native-msal-client';
-const authority = 'https://login.microsoftonline.com/common';
-const clientId = 'b0024ae1-263c-406a-8bc6-34aecf73a907';
-const redirectUri =  `msal${clientId}://auth`;
+
+const authority = 'https://login.microsoftonline.com/tfp/esmartdroneb2c.onmicrosoft.com/B2C_1_SI';
+const clientId = 'f9a4a5a2-7866-4317-ab87-19b3acf350e2';
+const redirectUri = `msal${clientId}://auth`;
 const scopes = [
-  'User.Read'
+  'https://esmartdroneb2c.onmicrosoft.com/esmartFacadeAPI/write',
 ];
 
-export default class msalExample extends Component {
+export default () => {
+  const [authClient] = useState(() => new MsalClient(authority));
+  const [loginState, setLoginState] = useState({
+    isLoggedin: false,
+    name: '',
+    userIdentifier: null,
+  });
 
-  constructor(props) {
-    super(props);
 
-    this.authClient = new MsalClient(authority);
+  const _handleLoginPress = async () => {
+    let result;
+    try {
+      if (loginState.userIdentifier) {
+        result = await authClient.acquireTokenSilentAsync(clientId, scopes, loginState.userIdentifier);
+      } else {
+        result = await authClient.acquireTokenAsync(clientId, scopes, redirectUri);
+      }
 
-    this.state = {
+      setLoginState({
+        isLoggedin: true,
+        name: result.userInfo.name,
+        userIdentifier: result.userInfo.userIdentifier,
+      });
+    } catch (err) {
+      console.log(err, err.code, err.domain, err.message);
+    }
+  };
+
+  const _handleLogoutPress = () => {
+    setLoginState({
       isLoggedin: false,
       name: '',
       userIdentifier: null,
-    }
-  }
-
-  _handleLoginPress = () => {
-    if (this.state.userIdentifier) {
-      this.authClient.acquireTokenSilentAsync(clientId, scopes, this.state.userIdentifier)
-        .then((result) => {
-          this.setState({
-            isLoggedin: true,
-            name: result.userInfo.name,
-            userIdentifier: result.userInfo.userIdentifier,
-          });
-        })
-        .catch((err) => {
-          console.log('error', err);
-        })
-    } else {
-      this.authClient.acquireTokenAsync(clientId, scopes, redirectUri)
-        .then((result)=> {
-          this.setState({
-            isLoggedin: true,
-            name: result.userInfo.name,
-            userIdentifier: result.userInfo.userIdentifier,
-          });
-
-          console.log('success', result);
-        }).catch((err) => {
-          console.error(err);
-        })
-      }
-
-  }
-
-  _handleLogoutPress = () => {
-    this.setState({
-      isLoggedin: false,
-      name: '',
     });
-  }
+  };
 
-  renderLogin() {
-    return (
-      <Button title="login" onPress={this._handleLoginPress} />
-    );
-  }
+  const renderLogin = () => (
+    <Button title="login" onPress={_handleLoginPress} />
+  );
 
-  renderLogout() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Hi {this.state.name}!</Text>
-        <Button title="logout" onPress={this._handleLogoutPress} />
-      </View>
-    );
-  }
+  const renderLogout = () => (
+    <View style={styles.container}>
+      <Text style={styles.welcome}>
+        {`Hi ${loginState.name}! `}
+      </Text>
+      <Button title="logout" onPress={_handleLogoutPress} />
+    </View>
+  );
 
-  render() {
-    return (
-      <View style={styles.container}>
-        {
-          this.state.isLoggedin
-            ? this.renderLogout()
-            : this.renderLogin()
-        }
-      </View>
-    );
-  }
-}
+  return (
+    <View style={styles.container}>
+      {
+        loginState.isLoggedin
+          ? renderLogout()
+          : renderLogin()
+      }
+    </View>
+  );
+};
+
 
 const styles = StyleSheet.create({
   container: {

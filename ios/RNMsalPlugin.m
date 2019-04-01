@@ -28,7 +28,7 @@ static NSMutableDictionary* existingApplications = nil;
 
 - (NSDictionary *)constantsToExport
 {
-    return @{ @"MSALErrorCode" :
+    return @{ @"MSALErrorCodes" :
                   @{
                       @"InvalidParameter" : @(MSALErrorInvalidParameter),
                       @"RedirectSchemeNotRegistered" : @(MSALErrorRedirectSchemeNotRegistered),
@@ -54,7 +54,6 @@ static NSMutableDictionary* existingApplications = nil;
                       @"Internal": @(MSALErrorInternal),
                       @"InvalidState": @(MSALErrorInvalidState),
                       @"InvalidResponse": @(MSALErrorInvalidResponse)
-
                       },
               @"MSALUIBehavior":
                   @{
