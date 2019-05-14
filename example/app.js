@@ -8,11 +8,11 @@ import {
 
 import MsalClient from 'react-native-msal-client';
 
-const authority = 'https://login.microsoftonline.com/tfp/esmartdroneb2c.onmicrosoft.com/B2C_1_SI';
-const clientId = 'f9a4a5a2-7866-4317-ab87-19b3acf350e2';
+const authority = 'https://login.microsoftonline.com/common';
+const clientId = '1ee9299a-9936-4aa9-92c5-b5602ee938d9';
 const redirectUri = `msal${clientId}://auth`;
 const scopes = [
-  'https://esmartdroneb2c.onmicrosoft.com/esmartFacadeAPI/write',
+  'email',
 ];
 
 export default () => {

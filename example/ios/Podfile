@@ -6,5 +6,5 @@ target 'msalExample' do
   # use_frameworks!
 
   # Pods for msalExample
-  pod 'MSAL', '0.2.3'
+  pod 'MSAL', '0.4.2'
 end
