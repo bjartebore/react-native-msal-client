@@ -23,8 +23,8 @@
 		4957BAE0CAB0B87F2D19B6A2 /* libPods-msalExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB367A9AF41FB463E5DF0850 /* libPods-msalExample.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6258D7F9221C02550044CE96 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6258D7CA221C02550044CE96 /* JavaScriptCore.framework */; };
-		62D1518F20DEC0C900B947F4 /* libRNMsalPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D1518E20DEBF8E00B947F4 /* libRNMsalPlugin.a */; };
 		62D1519120DFCF0C00B947F4 /* libMSAL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62D1519020DFCF0C00B947F4 /* libMSAL.a */; };
+		62EA875E225384CB0039CA0C /* libRNMsalPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62EA875D225382990039CA0C /* libRNMsalPlugin.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 /* End PBXBuildFile section */
@@ -268,9 +268,9 @@
 			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 			remoteInfo = "jsiexecutor-tvOS";
 		};
-		62D1518D20DEBF8E00B947F4 /* PBXContainerItemProxy */ = {
+		62EA875C225382990039CA0C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 62D1518920DEBF8E00B947F4 /* RNMsalPlugin.xcodeproj */;
+			containerPortal = 62EA8758225382990039CA0C /* RNMsalPlugin.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNMsalPlugin;
@@ -323,8 +323,8 @@
 		6258D7CA221C02550044CE96 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		6258D7FA221C19AD0044CE96 /* msalExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = msalExample.entitlements; path = msalExample/msalExample.entitlements; sourceTree = "<group>"; };
 		62D1514E20DEAAE700B947F4 /* libMSAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMSAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		62D1518920DEBF8E00B947F4 /* RNMsalPlugin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNMsalPlugin.xcodeproj; path = "../node_modules/react-native-msal-client/ios/RNMsalPlugin.xcodeproj"; sourceTree = "<group>"; };
 		62D1519020DFCF0C00B947F4 /* libMSAL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libMSAL.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		62EA8758225382990039CA0C /* RNMsalPlugin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNMsalPlugin.xcodeproj; path = ../../ios/RNMsalPlugin.xcodeproj; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -337,9 +337,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62EA875E225384CB0039CA0C /* libRNMsalPlugin.a in Frameworks */,
 				6258D7F9221C02550044CE96 /* JavaScriptCore.framework in Frameworks */,
 				62D1519120DFCF0C00B947F4 /* libMSAL.a in Frameworks */,
-				62D1518F20DEC0C900B947F4 /* libRNMsalPlugin.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -498,10 +498,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		62D1518A20DEBF8E00B947F4 /* Products */ = {
+		62EA8759225382990039CA0C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				62D1518E20DEBF8E00B947F4 /* libRNMsalPlugin.a */,
+				62EA875D225382990039CA0C /* libRNMsalPlugin.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -518,7 +518,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				62D1518920DEBF8E00B947F4 /* RNMsalPlugin.xcodeproj */,
+				62EA8758225382990039CA0C /* RNMsalPlugin.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -631,6 +631,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -687,8 +688,8 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 62D1518A20DEBF8E00B947F4 /* Products */;
-					ProjectRef = 62D1518920DEBF8E00B947F4 /* RNMsalPlugin.xcodeproj */;
+					ProductGroup = 62EA8759225382990039CA0C /* Products */;
+					ProjectRef = 62EA8758225382990039CA0C /* RNMsalPlugin.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -937,11 +938,11 @@
 			remoteRef = 6258D7F6221C02550044CE96 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		62D1518E20DEBF8E00B947F4 /* libRNMsalPlugin.a */ = {
+		62EA875D225382990039CA0C /* libRNMsalPlugin.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNMsalPlugin.a;
-			remoteRef = 62D1518D20DEBF8E00B947F4 /* PBXContainerItemProxy */;
+			remoteRef = 62EA875C225382990039CA0C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {

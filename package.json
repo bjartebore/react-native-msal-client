@@ -1,6 +1,6 @@
 {
   "name": "react-native-msal-client",
-  "version": "0.2.3",
+  "version": "0.4.0",
   "description": "React Native Bindings for the Microsoft MSAL library",
   "main": "./dist/index.js",
   "scripts": {
@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/bjartebore/react-native-msal-client#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-0",
+		"@babel/core": "^7.4.0",
+		"@babel/runtime": "^7.4.2",
     "@babel/preset-flow": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^4.19.1 || ^5.3.0",
@@ -37,8 +38,8 @@
     "eslint-plugin-react": "^7.11.0",
     "eslint-plugin-react-hooks": "^1.4.0",
     "flow-bin": "0.86.0",
-    "react": "16.6.3",
-    "react-native": "^0.58.6",
+    "react": "16.8.3",
+    "react-native": "0.59.2",
     "rollup": "^1.4.1",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.1",
@@ -49,6 +50,6 @@
     "react-native": "*"
   },
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.3.4"
+    "@babel/plugin-proposal-class-properties": "^7.4.0"
   }
 }

@@ -6,20 +6,17 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"@babel/core": "^7.0.0-0",
-		"react": "16.6.3",
-		"react-native": "0.58.5",
-		"react-native-msal-client": "../"
+		"@babel/runtime": "^7.4.2",
+		"react": "16.8.3",
+		"react-native": "0.59.2",
+		"react-native-msal-client": "file:./.."
 	},
 	"devDependencies": {
-		"babel-core": "^7.0.0-bridge.0",
-		"babel-jest": "24.1.0",
-		"babel-preset-react-native": "^4.0.1",
-		"jest": "24.1.0",
-		"metro-react-native-babel-preset": "0.51.1",
-		"react-test-renderer": "16.6.3"
-	},
-	"jest": {
-		"preset": "react-native"
+		"@babel/core": "^7.4.0",
+		"babel-jest": "24.5.0",
+		"eslint": "^5.15.3",
+		"jest": "24.5.0",
+		"metro-react-native-babel-preset": "^0.53.1",
+		"react-test-renderer": "16.8.3"
 	}
 }

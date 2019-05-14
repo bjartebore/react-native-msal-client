@@ -1,17 +1,18 @@
 // @flow
 import {
   NativeModules,
+  Platform,
 } from 'react-native';
 
 const { RNMsalPlugin } = NativeModules;
 
 export const {
-  MSALErrorCode,
+  MSALErrorCodes = {},
   MSALUIBehavior,
 } = RNMsalPlugin;
 
 const normalizeError = err => {
-  if (err.code) {
+  if (Platform.OS === 'ios' && err.code) {
     err.code = parseInt(err.code, 10);
   }
   throw err;
@@ -38,7 +39,7 @@ export default class MsalClient {
     this._validateAuthority = validate;
   }
 
-  static ErrorCodes = MSALErrorCode;
+  static ErrorCodes = MSALErrorCodes;
 
   acquireTokenAsync = (
     clientId: string,
@@ -78,5 +79,5 @@ export default class MsalClient {
     this._authority,
     clientId,
     userIdentitfier,
-  ).catch(normalizeError)
+  ).catch(normalizeError);
 }

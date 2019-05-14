@@ -1,0 +1,4 @@
+rootProject.name = 'msalExample'
+include ':react-native-msal-client'
+project(':react-native-msal-client').projectDir = new File(rootProject.projectDir, '../../android')
+include ':app'
