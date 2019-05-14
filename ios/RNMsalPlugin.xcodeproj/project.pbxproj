@@ -26,6 +26,7 @@
 		134814201AA4EA6300B7C361 /* libRNMsalPlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMsalPlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13BE3DEC1AC21097009241FE /* RNMsalPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNMsalPlugin.h; sourceTree = "<group>"; };
 		13BE3DED1AC21097009241FE /* RNMsalPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNMsalPlugin.m; sourceTree = "<group>"; };
+		62B00B59228AA46D00BC08EB /* RNMSAL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMSAL.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +51,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				62B00B59228AA46D00BC08EB /* RNMSAL.h */,
 				13BE3DEC1AC21097009241FE /* RNMsalPlugin.h */,
 				13BE3DED1AC21097009241FE /* RNMsalPlugin.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -203,7 +205,9 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../React/**",
 					"$(SRCROOT)/../../node_modules/react-native/React/**",
+					"$(SRCROOT)/../../../ios/Pods/MSAL/MSAL/src/public/**",
 					"$(SRCROOT)/../../../ios/Pods/Headers/Public/MSAL",
+					"$(SRCROOT)/../example/ios/Pods/MSAL/MSAL/src/public/**",
 					"$(SRCROOT)/../example/ios/Pods/Headers/Public/MSAL",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -222,7 +226,9 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../React/**",
 					"$(SRCROOT)/../../node_modules/react-native/React/**",
+					"$(SRCROOT)/../../../ios/Pods/MSAL/MSAL/src/public/**",
 					"$(SRCROOT)/../../../ios/Pods/Headers/Public/MSAL",
+					"$(SRCROOT)/../example/ios/Pods/MSAL/MSAL/src/public/**",
 					"$(SRCROOT)/../example/ios/Pods/Headers/Public/MSAL",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
