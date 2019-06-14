@@ -41,6 +41,10 @@ export default class MsalClient {
 
   static ErrorCodes = MSALErrorCodes;
 
+  setAuthority = (authority: string) => {
+    this._authority = authority;
+  }
+
   acquireTokenAsync = (
     clientId: string,
     scopes: Array<string>,
