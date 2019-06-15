@@ -38,7 +38,8 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule {
 
   public static final String USERNAME_MISSING_PLACEHOLDER = "Missing from the token response";
 
-  private PublicClientApplication client;
+  private PublicClientApplication currentClient;
+  private Map<String, PublicClientApplication> client = new HashMap<>();
 
   @Override
   public String getName() {
@@ -67,7 +68,7 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule {
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
       super.onActivityResult(activity, requestCode, resultCode, data);
 
-      client.handleInteractiveRequestRedirect(requestCode, resultCode, data);
+      currentClient.handleInteractiveRequestRedirect(requestCode, resultCode, data);
     }
   };
 
@@ -211,14 +212,15 @@ public class RNMsalPlugin extends ReactContextBaseJavaModule {
       String clientId
   ) {
 
-    if (this.client == null) {
-      this.client = new PublicClientApplication(
+    if (!this.client.containsKey(authority)) {
+      this.client.put(authority,  new PublicClientApplication(
               this.getReactApplicationContext().getApplicationContext(),
               clientId,
               authority
-      );
+      ));
     }
-    return this.client;
-  }
 
+    this.currentClient = this.client.get(authority);
+    return this.currentClient;
+  }
 }
